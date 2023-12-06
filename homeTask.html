@@ -8,7 +8,7 @@
         }
         advance() {
           this.index += 1;
-          return this.index < this.arr.length - 1;
+          return this.arr[this.index] ?? false;
         }
         currentIndex() {
           return this.index;
