@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <script>
+      //   const arr = [1, 10, 15, 17, 25, 144];
+      const arr = [-5, 0, 1, 4, 7, 11, 22, 23, 30, 36, 47];
+
+      function compareFn(a, b) {
+        if (a > b) {
+          return 1;
+        } else if (a < b) {
+          return -1;
+        } else {
+          return 0;
+        }
+      }
+
+      const binarySearch = (arr, val, compareFn) => {
+        let start = 0; // первый индекс
+        let end = arr.length - 1; // последний индекс
+
+        while (start <= end) {
+          const mid = Math.floor((start + end) / 2); // вычисляем середину и округляем вниз
+
+          if (mid === start) {
+            // когда расстояние между start и end 1 мы застрянем
+            // из-за того что среднее между ними 0.5 и мы при округлении вниз мы будем двигать границу на 0
+            if (arr[end] === val) {
+              // проверка на то что последнее значение то которое мы ищем
+              return end;
+            } else {
+              return -1;
+            }
+          } else if (arr[mid] === val) {
+            // проверка то что значение посередине равно искомому
+            return mid;
+          } else if (compareFn(val, arr[mid]) > 0) {
+            // если значение меньше (находится слева от середины) то
+            start = mid; // сдвигаем старт на середину
+          } else {
+            end = mid; // сдвигаем конец на середину
+          }
+        }
+        return -1;
+      };
+
+      const binaryRemove = (arr, val, compareFn) => {
+        const index = binarySearch(arr, val, compareFn); // находит элемент
+        if (index === -1) {
+          return -1;
+        } else {
+          arr.splice(index, 1); // удаляет
+          return arr;
+        }
+      };
+
+      const binaryInsert = (arr, val, compareFn) => {
+        let start = 0;
+        let end = arr.length - 1;
+        while (start <= end) {
+          const mid = Math.floor((start + end) / 2);
+          if (mid === start) {
+            if (arr[end] <= val) {
+              arr.push(val);
+              return arr; // вставляет в конец если значение больше чем последнее
+            } else {
+              arr.splice(mid + 1, 0, val); // вставляет перед последним
+              return arr;
+            }
+          } else if (arr[mid] === val) {
+            return arr.splice(mid, 0, val);
+          } else if (compareFn(val, arr[mid]) === 1) {
+            start = mid;
+          } else {
+            end = mid;
+          }
+        }
+        arr.splice(start + 1, 0, val); // вставляет после границы слева (того значения что меньше)
+        return arr;
+      };
+      console.log(binarySearch(arr, 47, compareFn));
+      console.log(binaryInsert(arr, 18, compareFn));
+      console.log(binaryRemove(arr, 17, compareFn));
+    </script>
+  </head>
+  <body></body>
+</html>

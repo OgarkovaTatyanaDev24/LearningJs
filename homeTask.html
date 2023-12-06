@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <script>
+      class Iterator {
+        constructor(arr) {
+          this.arr = arr;
+          this.index = -1;
+        }
+        advance() {
+          if (this.index < this.arr.length - 1) {
+            this.index += 1;
+            return true;
+          } else {
+            return false;
+          }
+        }
+        currentIndex() {
+          return this.index;
+        }
+        currentValue() {
+          if (this.index > -1 && this.index < this.arr.length) {
+            return this.arr[this.index];
+          } else {
+            return null;
+          }
+        }
+        select(value) {
+          this.index = value;
+          if (this.index > -1 && this.index < this.arr.length) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        reset() {
+          this.index = -1;
+        }
+      }
+
+      const iterator = new Iterator([100, 200, 300]);
+
+      // Начальное состояние итератора
+
+      console.log("initial state:");
+      console.log(iterator.currentIndex());
+      console.log(iterator.currentValue());
+
+      // advance()
+
+      console.log("advance:");
+      while (iterator.advance()) {
+        console.log("index", iterator.currentIndex());
+        console.log("value", iterator.currentValue());
+      }
+      iterator.advance();
+
+      // currentIndex()
+
+      console.log("currentIndex:");
+      console.log(iterator.currentIndex());
+
+      // select()
+
+      console.log("select:");
+      console.log(iterator.select(1));
+      console.log(iterator.currentIndex());
+      console.log(iterator.currentValue());
+
+      console.log(iterator.select(5));
+      console.log(iterator.currentIndex());
+      console.log(iterator.currentValue());
+
+      // currentValue()
+
+      console.log("currentValue:");
+      console.log(iterator.currentValue());
+
+      //   reset()
+      console.log("reset");
+      iterator.reset();
+      console.log("index", iterator.currentIndex());
+      console.log("value", iterator.currentValue());
+    </script>
+  </head>
+  <body></body>
+</html>

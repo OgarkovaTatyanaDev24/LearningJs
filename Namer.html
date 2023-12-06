@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <script>
+      /**
+       * Represents a Namer
+       */
+      class Namer {
+        /**
+         * Creates Namer and logs in console "I am created!!!!"
+         * @param {string} name - Name of a person.
+         */
+        constructor(name) {
+          console.log("I am created!!!!");
+
+          this.name = name;
+          console.log(this.name);
+        }
+
+        /**
+         * Splits tyhis.name value to separated symbols as array.
+         * @returns {[string]} Array of name chars
+         */
+        nameToArray() {
+          return this.name.split("");
+        }
+
+        /**
+         * Prints each letter of name to console
+         */
+        nameToConsole() {
+          const splittedName = this.nameToArray();
+
+          for (let i = 0; i < splittedName.length; i++) {
+            console.log(splittedName[i]);
+          }
+        }
+      }
+      /**
+       * Represents ReverseNamer
+       * @extends Namer
+       */
+      class ReverseNamer extends Namer {
+        /**
+         * Prints each letter of name to console in reverse order
+         */
+        nameToConsole() {
+          const splittedName = this.nameToArray();
+
+          for (let i = splittedName.length; i > 0; i--) {
+            console.log(splittedName[i - 1]);
+          }
+        }
+      }
+
+      const person1 = new Namer("Tanya");
+      person1.nameToConsole();
+
+      const person2 = new ReverseNamer("Tanya");
+      person2.nameToConsole();
+    </script>
+  </head>
+  <body></body>
+</html>
