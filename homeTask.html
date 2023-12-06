@@ -6,19 +6,18 @@
           this.arr = arr;
           this.index = -1;
         }
+        isInArray() {
+          return this.index > -1 && this.index < this.arr.length;
+        }
         advance() {
           this.index += 1;
-          if (this.index < this.arr.length - 1) {
-            return true;
-          } else {
-            return false;
-          }
+          return this.index < this.arr.length - 1;
         }
         currentIndex() {
           return this.index;
         }
         currentValue() {
-          if (this.index > -1 && this.index < this.arr.length) {
+          if (this.isInArray()) {
             return this.arr[this.index];
           } else {
             return null;
@@ -26,11 +25,7 @@
         }
         select(value) {
           this.index = value;
-          if (this.index > -1 && this.index < this.arr.length) {
-            return true;
-          } else {
-            return false;
-          }
+          return this.isInArray();
         }
         reset() {
           this.index = -1;
