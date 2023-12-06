@@ -7,8 +7,8 @@
           this.index = -1;
         }
         advance() {
+          this.index += 1;
           if (this.index < this.arr.length - 1) {
-            this.index += 1;
             return true;
           } else {
             return false;
