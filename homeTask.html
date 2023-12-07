@@ -18,7 +18,7 @@
         }
         select(value) {
           this.index = value;
-          return !(this.arr[this.index] === undefined);
+          return this.arr[this.index] ?? false;
         }
         reset() {
           this.index = -1;
