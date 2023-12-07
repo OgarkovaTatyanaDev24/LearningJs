@@ -8,7 +8,7 @@
         }
         advance() {
           this.index += 1;
-          return this.arr[this.index] ?? false;
+          return this.select(this.index)
         }
         currentIndex() {
           return this.index;
@@ -18,7 +18,7 @@
         }
         select(value) {
           this.index = value;
-          return this.arr[this.index] ?? false;
+          return this.currentValue() ?? false;
         }
         reset() {
           this.index = -1;
