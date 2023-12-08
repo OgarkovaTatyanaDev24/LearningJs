@@ -8,7 +8,7 @@
         }
         advance() {
           this.index += 1;
-          return this.select(this.index)
+          return this.select(this.index);
         }
         currentIndex() {
           return this.index;
@@ -25,7 +25,7 @@
         }
       }
 
-      const iterator = new Iterator([100, 200, 300]);
+      const iterator = new Iterator([0, 0, 0]);
 
       // Начальное состояние итератора
 
@@ -36,11 +36,18 @@
       // advance()
 
       console.log("advance:");
-      while (iterator.advance()) {
-        console.log("index", iterator.currentIndex());
-        console.log("value", iterator.currentValue());
-      }
       iterator.advance();
+      console.log("index", iterator.currentIndex());
+      console.log("value", iterator.currentValue());
+
+      iterator.advance();
+      iterator.advance();
+      console.log("index", iterator.currentIndex());
+      console.log("value", iterator.currentValue());
+
+      iterator.advance();
+      console.log("index", iterator.currentIndex());
+      console.log("value", iterator.currentValue());
 
       // currentIndex()
 
@@ -54,7 +61,7 @@
       console.log(iterator.currentIndex());
       console.log(iterator.currentValue());
 
-      console.log(iterator.select(5));
+      console.log(iterator.select(1));
       console.log(iterator.currentIndex());
       console.log(iterator.currentValue());
 

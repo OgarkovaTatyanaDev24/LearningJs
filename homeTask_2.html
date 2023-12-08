@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <script>
+      class PaginationHelper {
+        constructor(collection, itemsPerPage) {
+          this.items = collection; // массив
+          this.pageEl = itemsPerPage; // максимальное кол-во элементов на странице
+        }
+        // количество элементов в массиве
+        itemCount() {
+          return this.items.length;
+        }
+        // количество страниц
+        pageCount() {
+          return Math.ceil(this.itemCount() / this.pageEl);
+        }
+        // количество элементов на странице
+        pageItemCount(pageIndex) {
+          // если страницы с заданным индексом не существует
+          if (0 > pageIndex || pageIndex >= this.pageCount()) {
+            return -1;
+          }
+          // если массив состоит из одного элемента
+          else if (this.itemCount() === 1) {
+            return 1;
+          }
+          // если это не последняя страница
+          // или если на странице один элемент
+          // или последняя страница полностью заполнена
+          else if (
+            pageIndex + 1 != this.pageCount() ||
+            this.pageEl === 1 ||
+            this.itemCount() === this.pageEl * this.pageCount()
+          ) {
+            return this.pageEl;
+          }
+          // если это последняя страница или количество элементов на странице не равно максимально возможному количеству эл. на странице
+          else {
+            return this.itemCount() % this.pageEl;
+          }
+        }
+        // индекс страницы, на которой находится элемент с заданным индексом
+        pageIndex(itemIndex) {
+          return 0 <= itemIndex && itemIndex < this.itemCount()
+            ? Math.floor(itemIndex / this.pageEl)
+            : -1;
+        }
+      }
+
+      // проверки
+
+      const collection = [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24,
+      ];
+      const helper = new PaginationHelper(collection, 10);
+
+      console.log(helper, "pageCount", 3);
+      console.log(helper, "itemCount", 24);
+
+      console.log(helper, "pageItemCount", 10, 1);
+      console.log(helper, "pageItemCount", 4, 2);
+      console.log(helper, "pageItemCount", -1, 3);
+      console.log(helper, "pageIndex", -1, 40);
+
+      console.log(helper, "pageIndex", 2, 22);
+      console.log(helper, "pageIndex", 0, 3);
+      console.log(helper, "pageIndex", 0, 0);
+      console.log(helper, "pageIndex", -1, -1);
+      console.log(helper, "pageIndex", -1, -23);
+      console.log(helper, "pageIndex", -1, -15);
+
+      const empty = new PaginationHelper([], 10);
+
+      console.log(empty, "pageCount", 0);
+      console.log(empty, "itemCount", 0);
+      console.log(empty, "pageIndex", -1, 0);
+      console.log(empty, "pageItemCount", -1, 0);
+    </script>
+  </head>
+  <body></body>
+</html>
