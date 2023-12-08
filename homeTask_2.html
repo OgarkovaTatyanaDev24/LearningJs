@@ -3,16 +3,16 @@
     <script>
       class PaginationHelper {
         constructor(collection, itemsPerPage) {
-          this.items = collection; // массив
-          this.pageEl = itemsPerPage; // максимальное кол-во элементов на странице
+          this.collection = collection; // массив
+          this.itemsPerPage = itemsPerPage; // максимальное кол-во элементов на странице
         }
         // количество элементов в массиве
         itemCount() {
-          return this.items.length;
+          return this.collection.length;
         }
         // количество страниц
         pageCount() {
-          return Math.ceil(this.itemCount() / this.pageEl);
+          return Math.ceil(this.itemCount() / this.itemsPerPage);
         }
         // количество элементов на странице
         pageItemCount(pageIndex) {
@@ -29,20 +29,20 @@
           // или последняя страница полностью заполнена
           else if (
             pageIndex + 1 != this.pageCount() ||
-            this.pageEl === 1 ||
-            this.itemCount() === this.pageEl * this.pageCount()
+            this.itemsPerPage === 1 ||
+            this.itemCount() === this.itemsPerPage * this.pageCount()
           ) {
-            return this.pageEl;
+            return this.itemsPerPage;
           }
           // если это последняя страница или количество элементов на странице не равно максимально возможному количеству эл. на странице
           else {
-            return this.itemCount() % this.pageEl;
+            return this.itemCount() % this.itemsPerPage;
           }
         }
         // индекс страницы, на которой находится элемент с заданным индексом
         pageIndex(itemIndex) {
           return 0 <= itemIndex && itemIndex < this.itemCount()
-            ? Math.floor(itemIndex / this.pageEl)
+            ? Math.floor(itemIndex / this.itemsPerPage)
             : -1;
         }
       }
