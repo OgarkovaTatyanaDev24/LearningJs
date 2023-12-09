@@ -7,8 +7,7 @@
           this.reset();
         }
         advance() {
-          this.index += 1;
-          return this.select(this.index);
+          return this.arr[++this.index] !== undefined;
         }
         currentIndex() {
           return this.index;
@@ -18,9 +17,7 @@
         }
         select(value) {
           this.index = value;
-          return (
-            (this.index >= 0 && this.currentValue() !== undefined) ?? false
-          );
+          return this.currentValue() !== null;
         }
         reset() {
           this.index = -1;
@@ -59,8 +56,8 @@
       // select()
 
       console.log("select:");
-      console.log(iterator.select(-10));
-      console.log(iterator.select(1));
+      console.log(iterator.select(-5));
+      console.log(iterator.select(2));
       console.log(iterator.currentIndex());
       console.log(iterator.currentValue());
 
