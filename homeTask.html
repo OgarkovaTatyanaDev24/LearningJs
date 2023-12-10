@@ -1,24 +1,50 @@
 <html>
   <head>
     <script>
+      // Represents a Iterator.
       class Iterator {
+        /**
+         * @param {number[]} arr - Represents an array of numbers.
+         */
         constructor(arr) {
           this.arr = arr;
           this.reset();
         }
+        /**
+         * Shifts the iterator state one step forward.
+         * @returns {boolean}
+         * Returns true if a step forward has occurred in the array.
+         * Returns false if the end of the array is reached
+         */
         advance() {
           return this.arr[++this.index] !== undefined;
         }
+        /**
+         * @returns {number}
+         *  Returns the current index in an array. Initial state -1.
+         */
         currentIndex() {
           return this.index;
         }
+        /**
+         * @returns {number}
+         * Returns the current value of an element in an array. Initial state - null.
+         */
         currentValue() {
           return this.arr[this.index] ?? null;
         }
+        /**
+         * @param {number} value - Array element index.
+         * Sets cuurentIndex in the iterator.
+         * @returns {boolean}
+         * Returns true if the position was successfully set (did not go beyond the length of the array).
+         * Returns false if out of bounds.
+         */
         select(value) {
           this.index = value;
           return this.currentValue() !== null;
         }
+        // Resets the iterator position to its initial state.
         reset() {
           this.index = -1;
         }
@@ -26,7 +52,7 @@
 
       const iterator = new Iterator([0, 0, 0]);
 
-      // Начальное состояние итератора
+      // Initial state of the iterator.
 
       console.log("initial state:");
       console.log(iterator.currentIndex());
