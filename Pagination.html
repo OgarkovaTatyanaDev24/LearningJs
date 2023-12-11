@@ -1,49 +1,62 @@
 <html>
   <head>
     <script>
-      // Represents a PaginationHelper.
+      /**
+       * @class
+       * @classdesc The PaginationHelper class, which is a utility class helpful for querying paging information related to an array.
+       */
       class PaginationHelper {
         /**
-         * @param {number[]} collection - Represents an array of numbers.
-         * @param {number} itemsPerPage - Represents a number.
+         * @param {number[]} collection - Array of items.
+         * @param {number} itemsPerPage - Number of elements on the page.
          */
         constructor(collection, itemsPerPage) {
           this.collection = collection;
           this.itemsPerPage = itemsPerPage;
         }
         /**
-         * Number of elements in the array.
-         * @returns {number}
+         *Calculates the number of items within the entire collection.
+         *
+         * @returns {number} - Returns the number of items within the entire collection.
          */
         itemCount() {
           return this.collection.length;
         }
+
         /**
-         * Number of pages.
-         * @returns {number}
+         * Calculates number of pages available for current class settings.
+         * Note: pages count depends on collection length and
+         * items per page and can be calculated mathematically.
+         *
+         * @returns {number} - Pages count.
          */
         pageCount() {
           return Math.ceil(this.itemCount() / this.itemsPerPage);
         }
+
         /**
+         * Calculates the number of items on the current page.
+         *
          * @param {number} pageIndex - Index of the page.
-         * Amount of elements on the page.
-         * @returns {number}
+         * Note: pageIndex is zero based.
+         *
+         * @returns {number} - Number of items on the current page.
+         * Note: this method should return -1 for pageIndex values that are out of range.
          */
         pageItemCount(pageIndex) {
           // If the page at the given index does not exist.
-          if (0 > pageIndex || pageIndex >= this.pageCount()) {
+          if (pageIndex < 0 || pageIndex >= this.pageCount()) {
             return -1;
           }
           // If the array consists of one element.
           else if (this.itemCount() === 1) {
             return 1;
           } else if (
-            /**
-             * if this is not the last page.
-             * If there is one element on the last page.
-             * If the last page is completely filled.
-             */
+            /*
+            If it is not the last page
+            or if there is a single element on the page
+            or the last page is filled.
+          */
             pageIndex + 1 != this.pageCount() ||
             this.itemsPerPage === 1 ||
             this.itemCount() === this.itemsPerPage * this.pageCount()
@@ -55,13 +68,18 @@
             return this.itemCount() % this.itemsPerPage;
           }
         }
+
         /**
-         * @param {number} itemIndex - Index of the page.
-         * Index of the page on which the element with the given index is located.
-         * @returns {number}
+         * Determines what page an item is on.
+         *
+         * @param {number} itemIndex - Item index.
+         *
+         * @returns {number} - Index of the page on which the element with the given index is located.
+         * Note: this method should return -1 for pageIndex values that are out of range.
          */
+        //  кол-во элементов в принципе % количество элементов на странице
         pageIndex(itemIndex) {
-          return 0 <= itemIndex && itemIndex < this.itemCount()
+          return itemIndex >= 0 && itemIndex < this.itemCount()
             ? Math.floor(itemIndex / this.itemsPerPage)
             : -1;
         }
