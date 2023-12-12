@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <div id="block"></div>
+    <script>
+      const myGlobal = {
+        consistency: {
+          domMissing: true,
+          bounds: true,
+          position: true,
+        },
+      };
+
+      class Text {
+        constructor(text) {
+          this.text = text;
+          this.consistency = {
+            domMissing: true, // были ли изменения с true на false
+            bounds: true,
+            position: true,
+          };
+          this.positionX = 0;
+          this.positionY = 0;
+          this.spn = undefined;
+        }
+        render() {
+          if (
+            this.consistency.bounds === true ||
+            this.consistency.domMissing === true ||
+            this.consistency.position === true
+          ) {
+            if (this.spn === undefined) {
+              this.spn = document.createElement("span");
+              this.spn.style.position = "absolute";
+              block.appendChild(this.spn);
+            }
+            this.spn.innerHTML = this.text;
+
+            this.spn.style.left = this.positionX + "px";
+            this.spn.style.top = this.positionY + "px";
+
+            this.consistency.bounds = false;
+            this.consistency.domMissing = false;
+            this.consistency.position = false;
+          }
+        }
+        setPosition(x, y) {
+          if (this.positionX !== x || this.positionY !== y) {
+            this.positionX = x;
+            this.positionY = y;
+
+            this.consistency.position = true;
+
+            myGlobal.consistency.position = !myGlobal.consistency.position;
+          }
+        }
+        setText(newText) {
+          this.text = newText;
+          this.consistency.bounds = true;
+
+          myGlobal.consistency.bounds = !myGlobal.consistency.bounds;
+        }
+        getPosition() {
+          return { left: this.spn.style.left, top: his.spn.style.top };
+        }
+        getSize() {
+          return {
+            width: parseInt(this.spn.style.width),
+            height: parseInt(this.spn.style.height),
+          };
+        }
+      }
+      // Instancs
+
+      const someText = new Text("Hello, I am span");
+      someText.render();
+      someText.setPosition(50, 50);
+      console.log(myGlobal.consistency.position);
+
+      someText.setPosition(70, 70);
+      console.log(myGlobal.consistency.position);
+
+      const someText2 = new Text("Hello, I am the second span");
+      someText2.render();
+
+      const someText3 = new Text("Hello");
+    </script>
+  </head>
+  <body></body>
+</html>
