@@ -4,9 +4,29 @@
     <script>
       const myGlobal = {
         consistency: {
-          domMissing: true,
-          bounds: true,
-          position: true,
+          domMissing: false,
+          bounds: false,
+          position: false,
+        },
+        counter: {
+          domMissing: 0,
+          bounds: 0,
+          position: 0,
+        },
+        changeDomMissing(change) {
+          if (change) this.counter.domMissing++;
+          else this.counter.domMissing--;
+          this.consistency.domMissing = this.counter.domMissing !== 0;
+        },
+        changeBounds(change) {
+          if (change) this.counter.bounds++;
+          else this.counter.bounds--;
+          this.consistency.bounds = this.counter.bounds !== 0;
+        },
+        changePosition(change) {
+          if (change) this.counter.position++;
+          else this.counter.position--;
+          this.consistency.position = this.counter.position !== 0;
         },
       };
 
@@ -14,58 +34,73 @@
         constructor(text) {
           this.text = text;
           this.consistency = {
-            domMissing: true, 
+            domMissing: true,
             bounds: true,
             position: true,
           };
+          myGlobal.changeDomMissing(true);
+          myGlobal.changeBounds(true);
+          myGlobal.changePosition(true);
           this.positionX = 0;
           this.positionY = 0;
           this.spn = undefined;
         }
         render() {
-          if (
-            this.consistency.bounds === true ||
-            this.consistency.domMissing === true ||
-            this.consistency.position === true
-          ) {
-            if (this.spn === undefined) {
-              this.spn = document.createElement("span");
-              this.spn.style.position = "absolute";
-              block.appendChild(this.spn);
-            }
+          if (this.consistency.domMissing === true) {
+            this.spn = document.createElement("span");
+            this.spn.style.position = "absolute";
+            block.appendChild(this.spn);
+
+            myGlobal.changeDomMissing(false);
+            this.consistency.domMissing = false;
+          }
+          if (this.consistency.bounds === true) {
             this.spn.innerHTML = this.text;
 
+            this.consistency.bounds = false;
+            myGlobal.changeBounds(false);
+          }
+          if (this.consistency.position === true) {
             this.spn.style.left = this.positionX + "px";
             this.spn.style.top = this.positionY + "px";
 
-            this.consistency.bounds = false;
-            this.consistency.domMissing = false;
             this.consistency.position = false;
+            myGlobal.changePosition(false);
           }
         }
         setPosition(x, y) {
           if (this.positionX !== x || this.positionY !== y) {
             this.positionX = x;
             this.positionY = y;
-
-            this.consistency.position = true;
-
-            myGlobal.consistency.position = !myGlobal.consistency.position;
+            if (!this.consistency.position) {
+              this.consistency.position = true;
+              myGlobal.changePosition(true);
+            }
           }
         }
         setText(newText) {
-          this.text = newText;
-          this.consistency.bounds = true;
-
-          myGlobal.consistency.bounds = !myGlobal.consistency.bounds;
+          if (this.text !== newText) {
+            this.text = newText;
+            if (!this.consistency.position) {
+              this.consistency.bounds = true;
+              myGlobal.changeBounds(true);
+            }
+          }
         }
         getPosition() {
-          return { left: this.spn.style.left, top: his.spn.style.top };
+          if (this.spn === undefined) {
+            return { x: 0, y: 0 };
+          }
+          return { x: this.spn.style.left, y: this.spn.style.top };
         }
         getSize() {
+          if (this.spn === undefined) {
+            return { width: 0, height: 0 };
+          }
+          const domRect = this.spn.getBoundingClientRect();
           return {
-            width: parseInt(this.spn.style.width),
-            height: parseInt(this.spn.style.height),
+            width: domRect.width,
+            height: domRect.height,
           };
         }
       }
@@ -74,13 +109,25 @@
       const someText = new Text("Hello, I am span");
       someText.render();
       someText.setPosition(50, 50);
-      console.log(myGlobal.consistency.position);
+      console.log(myGlobal.consistency);
 
       someText.setPosition(70, 70);
-      console.log(myGlobal.consistency.position);
+      console.log(myGlobal.consistency);
+
+      let obj = someText.getSize();
+      console.log(obj);
 
       const someText2 = new Text("Hello, I am the second span");
+
+      someText2.setPosition(70, 70);
       someText2.render();
+      someText2.render();
+      console.log(myGlobal.counter);
+      someText.render();
+      console.log(myGlobal.counter);
+
+      console.log(someText2.getPosition());
+      console.log(myGlobal.consistency);
 
       const someText3 = new Text("Hello");
     </script>
