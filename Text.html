@@ -14,19 +14,22 @@
           position: 0,
         },
         changeDomMissing(change) {
-          if (change) this.counter.domMissing++;
-          else this.counter.domMissing--;
-          this.consistency.domMissing = this.counter.domMissing !== 0;
+          let add = change ? 1 : -1;
+          this.counter.domMissing += add;
+
+          this.consistency.domMissing = !!this.counter.domMissing;
         },
         changeBounds(change) {
-          if (change) this.counter.bounds++;
-          else this.counter.bounds--;
-          this.consistency.bounds = this.counter.bounds !== 0;
+          let add = change ? 1 : -1;
+          this.counter.bounds += add;
+
+          this.consistency.bounds = !!this.counter.bounds;
         },
         changePosition(change) {
-          if (change) this.counter.position++;
-          else this.counter.position--;
-          this.consistency.position = this.counter.position !== 0;
+          let add = change ? 1 : -1;
+          this.counter.position += add;
+
+          this.consistency.position = !!this.counter.position;
         },
       };
 
@@ -38,13 +41,19 @@
             bounds: true,
             position: true,
           };
+          this.positionCoords = {
+            x: 0,
+            y: 0,
+          };
+
+          this.spn = undefined;
+        }
+        changemyGlobal() {
           myGlobal.changeDomMissing(true);
           myGlobal.changeBounds(true);
           myGlobal.changePosition(true);
-          this.positionX = 0;
-          this.positionY = 0;
-          this.spn = undefined;
         }
+
         render() {
           if (this.consistency.domMissing === true) {
             this.spn = document.createElement("span");
@@ -61,17 +70,17 @@
             myGlobal.changeBounds(false);
           }
           if (this.consistency.position === true) {
-            this.spn.style.left = this.positionX + "px";
-            this.spn.style.top = this.positionY + "px";
+            this.spn.style.left = this.positionCoords.x + "px";
+            this.spn.style.top = this.positionCoords.y + "px";
 
             this.consistency.position = false;
             myGlobal.changePosition(false);
           }
         }
         setPosition(x, y) {
-          if (this.positionX !== x || this.positionY !== y) {
-            this.positionX = x;
-            this.positionY = y;
+          if (this.positionCoords.x !== x || this.positionCoords.y !== y) {
+            this.positionCoords.x = x;
+            this.positionCoords.y = y;
             if (!this.consistency.position) {
               this.consistency.position = true;
               myGlobal.changePosition(true);
@@ -106,30 +115,36 @@
       }
       // Instancs
 
-      const someText = new Text("Hello, I am span");
-      someText.render();
-      someText.setPosition(50, 50);
-      console.log(myGlobal.consistency);
+      for (let i = 0; i < 1000; i++) {
+        const text = new Text(`Text${i}`);
+        text.render();
+        text.setPosition();
+      }
 
-      someText.setPosition(70, 70);
-      console.log(myGlobal.consistency);
+      // const someText = new Text("Hello, I am span");
+      // someText.render();
+      // someText.setPosition(50, 50);
+      // console.log(myGlobal.consistency);
 
-      let obj = someText.getSize();
-      console.log(obj);
+      // someText.setPosition(70, 70);
+      // console.log(myGlobal.consistency);
 
-      const someText2 = new Text("Hello, I am the second span");
+      // let obj = someText.getSize();
+      // console.log(obj);
 
-      someText2.setPosition(70, 70);
-      someText2.render();
-      someText2.render();
-      console.log(myGlobal.counter);
-      someText.render();
-      console.log(myGlobal.counter);
+      // const someText2 = new Text("Hello, I am the second span");
 
-      console.log(someText2.getPosition());
-      console.log(myGlobal.consistency);
+      // someText2.setPosition(70, 70);
+      // someText2.render();
+      // someText2.render();
+      // console.log(myGlobal.counter);
+      // someText.render();
+      // console.log(myGlobal.counter);
 
-      const someText3 = new Text("Hello");
+      // console.log(someText2.getPosition());
+      // console.log(myGlobal.consistency);
+
+      // const someText3 = new Text("Hello");
     </script>
   </head>
   <body></body>
