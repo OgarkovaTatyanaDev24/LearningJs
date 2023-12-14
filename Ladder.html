@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>31.05.2023</title>
+    <style>
+      .sub {
+        position: absolute;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body></body>
+  <script>
+    // red
+    const elements = [];
+
+    for (let i = 0; i < 1e3; i++) {
+      const el = document.createElement("div");
+      document.body.appendChild(el);
+      el.className = "sub";
+      elements.push(el);
+    }
+
+    const bounds = [];
+    let lastTop = 0;
+    let lastLeft = 0;
+
+    console.time("MAGIC");
+    elements.forEach((div, i) => {
+      div.style.border = "1px solid red";
+      div.style.top = `${lastTop}px`;
+      div.style.left = `${lastLeft}px`;
+      div.innerText = "Text " + i;
+
+      const b = div.getBoundingClientRect();
+      bounds.push(b);
+
+      lastTop = b.bottom;
+      lastLeft = b.right;
+    });
+    console.timeEnd("MAGIC");
+
+    // green
+    const elements2 = [];
+
+    for (let i = 0; i < 1e3; i++) {
+      const el = document.createElement("div");
+      document.body.appendChild(el);
+      el.className = "sub";
+      elements2.push(el);
+    }
+
+    let lastTop2 = 50;
+    let lastLeft2 = 0;
+
+    console.time("MAGIC2");
+
+    elements2.forEach((div, i) => {
+      div.style.border = "1px solid green";
+      div.style.top = `${lastTop2}px`;
+      div.style.left = `${lastLeft2}px`;
+      div.innerText = "Text " + i;
+
+      lastTop2 = bounds[i].bottom + 50;
+      lastLeft2 = bounds[i].right;
+    });
+
+    console.timeEnd("MAGIC2");
+  </script>
+</html>
