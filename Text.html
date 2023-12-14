@@ -41,11 +41,17 @@
             bounds: true,
             position: true,
           };
-          this.positionCoords = {
+          this.domRect = {
+            width: 0,
+            height: 0,
             x: 0,
             y: 0,
           };
 
+          this.position = {
+            x: 0,
+            y: 0,
+          };
           this.spn = undefined;
         }
         changemyGlobal() {
@@ -58,6 +64,8 @@
           if (this.consistency.domMissing === true) {
             this.spn = document.createElement("span");
             this.spn.style.position = "absolute";
+            this.spn.style.border = "2px solid green";
+
             block.appendChild(this.spn);
 
             myGlobal.changeDomMissing(false);
@@ -67,20 +75,23 @@
             this.spn.innerHTML = this.text;
 
             this.consistency.bounds = false;
+            this.domRect = this.spn.getBoundingClientRect();
+
             myGlobal.changeBounds(false);
           }
           if (this.consistency.position === true) {
-            this.spn.style.left = this.positionCoords.x + "px";
-            this.spn.style.top = this.positionCoords.y + "px";
+            this.spn.style.left = this.position.x + "px";
+            this.spn.style.top = this.position.y + "px";
 
             this.consistency.position = false;
+            this.domRect = this.spn.getBoundingClientRect();
             myGlobal.changePosition(false);
           }
         }
         setPosition(x, y) {
-          if (this.positionCoords.x !== x || this.positionCoords.y !== y) {
-            this.positionCoords.x = x;
-            this.positionCoords.y = y;
+          if (this.position.x !== x || this.position.y !== y) {
+            this.position.x = x;
+            this.position.y = y;
             if (!this.consistency.position) {
               this.consistency.position = true;
               myGlobal.changePosition(true);
@@ -97,28 +108,30 @@
           }
         }
         getPosition() {
-          if (this.spn === undefined) {
-            return { x: 0, y: 0 };
-          }
-          return { x: this.spn.style.left, y: this.spn.style.top };
+          return { x: this.domRect.x, y: this.domRect.y };
         }
         getSize() {
-          if (this.spn === undefined) {
-            return { width: 0, height: 0 };
-          }
-          const domRect = this.spn.getBoundingClientRect();
           return {
-            width: domRect.width,
-            height: domRect.height,
+            width: this.domRect.width,
+            height: this.domRect.height,
           };
         }
       }
       // Instancs
+      const text = new Text(`Text0`);
+      text.render();
 
-      for (let i = 0; i < 1000; i++) {
+      let position = text.getPosition();
+      let size = text.getSize();
+
+      for (let i = 1; i < 1000; i++) {
         const text = new Text(`Text${i}`);
+        text.setPosition(position.x + size.width, position.y + size.height);
         text.render();
-        text.setPosition();
+        position = text.getPosition();
+        size = text.getSize();
+
+        console.log(position);
       }
 
       // const someText = new Text("Hello, I am span");

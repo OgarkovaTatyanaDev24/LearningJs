@@ -45,22 +45,17 @@
          */
         pageItemCount(pageIndex) {
           // If the page at the given index does not exist.
-          if (pageIndex < 0 || pageIndex >= this.pageCount()) {
+          const lastIndex = this.pageCount() - 1;
+          if (pageIndex < 0 || pageIndex > lastIndex) {
             return -1;
-          } else if (
-            /*
+          }
+          /*
             If it is not the last page
             or the last page is filled.
+            or the last page is not completely filled.
           */
-            pageIndex < this.pageCount() ||
-            this.itemCount() % this.itemsPerPage === 0
-          ) {
-            return this.itemsPerPage;
-          }
-          // If the last page is not completely filled.
-          else {
-            return this.itemCount() % this.itemsPerPage;
-          }
+          const rv = this.itemCount() % this.itemsPerPage || this.itemsPerPage;
+          return pageIndex < lastIndex ? this.itemsPerPage : rv;
         }
 
         /**
