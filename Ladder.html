@@ -46,29 +46,32 @@
     // green
     const elements2 = [];
 
-    const bounds2 = [];
-
     for (let i = 0; i < 1e3; i++) {
       const el = document.createElement("div");
       document.body.appendChild(el);
       el.className = "sub";
       elements2.push(el);
-
-      el.style.border = "1px solid green";
-      el.innerText = "Text " + i;
-      const b = el.getBoundingClientRect();
-      bounds2.push(b);
     }
 
+    const bounds2 = [];
     let lastTop2 = 50;
     let lastLeft2 = 0;
 
     console.time("MAGIC2");
 
     elements2.forEach((div, i) => {
+      div.style.border = "1px solid green";
+      div.innerText = "Text " + i;
+    });
+
+    elements2.forEach((div, i) => {
+      const b = div.getBoundingClientRect();
+      bounds2.push(b);
+    });
+
+    elements2.forEach((div, i) => {
       div.style.top = `${lastTop2}px`;
       div.style.left = `${lastLeft2}px`;
-
       lastTop2 += bounds2[i].height;
       lastLeft2 += bounds2[i].width;
     });
