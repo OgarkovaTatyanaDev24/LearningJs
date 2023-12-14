@@ -45,12 +45,28 @@
 
     // green
     const elements2 = [];
+    const position = {
+      x: 0,
+      y: 50,
+    };
+
+    // setPosition(x, y) {
+    //       if (this.position.x !== x || this.position.y !== y) {
+    //         this.position.x = x;
+    //         this.position.y = y;
+
+    const bounds2 = [];
 
     for (let i = 0; i < 1e3; i++) {
       const el = document.createElement("div");
       document.body.appendChild(el);
       el.className = "sub";
       elements2.push(el);
+
+      el.style.border = "1px solid green";
+      el.innerText = "Text " + i;
+      const b = el.getBoundingClientRect();
+      bounds2.push(b);
     }
 
     let lastTop2 = 50;
@@ -59,13 +75,11 @@
     console.time("MAGIC2");
 
     elements2.forEach((div, i) => {
-      div.style.border = "1px solid green";
       div.style.top = `${lastTop2}px`;
       div.style.left = `${lastLeft2}px`;
-      div.innerText = "Text " + i;
 
-      lastTop2 = bounds[i].bottom + 50;
-      lastLeft2 = bounds[i].right;
+      lastTop2 += bounds2[i].height;
+      lastLeft2 += bounds2[i].width;
     });
 
     console.timeEnd("MAGIC2");
