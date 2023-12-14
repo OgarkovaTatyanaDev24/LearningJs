@@ -41,11 +41,9 @@
             bounds: true,
             position: true,
           };
-          this.domRect = {
+          this.size = {
             width: 0,
             height: 0,
-            x: 0,
-            y: 0,
           };
 
           this.position = {
@@ -61,7 +59,7 @@
         }
 
         render() {
-          if (this.consistency.domMissing === true) {
+          if (this.consistency.domMissing) {
             this.spn = document.createElement("span");
             this.spn.style.position = "absolute";
             this.spn.style.border = "2px solid green";
@@ -71,15 +69,17 @@
             myGlobal.changeDomMissing(false);
             this.consistency.domMissing = false;
           }
-          if (this.consistency.bounds === true) {
+          if (this.consistency.bounds) {
             this.spn.innerHTML = this.text;
 
             this.consistency.bounds = false;
-            this.domRect = this.spn.getBoundingClientRect();
+            const domRect = this.spn.getBoundingClientRect();
+            this.size.height = domRect.height;
+            this.size.width = domRect.width;
 
             myGlobal.changeBounds(false);
           }
-          if (this.consistency.position === true) {
+          if (this.consistency.position) {
             this.spn.style.left = this.position.x + "px";
             this.spn.style.top = this.position.y + "px";
 
@@ -101,37 +101,30 @@
         setText(newText) {
           if (this.text !== newText) {
             this.text = newText;
-            if (!this.consistency.position) {
+            if (!this.consistency.bounds) {
               this.consistency.bounds = true;
               myGlobal.changeBounds(true);
             }
           }
         }
         getPosition() {
-          return { x: this.domRect.x, y: this.domRect.y };
+          return this.position;
         }
         getSize() {
-          return {
-            width: this.domRect.width,
-            height: this.domRect.height,
-          };
+          return this.size;
         }
       }
       // Instancs
-      const text = new Text(`Text0`);
-      text.render();
 
-      let position = text.getPosition();
-      let size = text.getSize();
+      let position = { x: 0, y: 0 };
+      let size = { width: 0, height: 0 };
 
-      for (let i = 1; i < 1000; i++) {
+      for (let i = 0; i < 1000; i++) {
         const text = new Text(`Text${i}`);
         text.setPosition(position.x + size.width, position.y + size.height);
         text.render();
         position = text.getPosition();
         size = text.getSize();
-
-        console.log(position);
       }
 
       // const someText = new Text("Hello, I am span");
