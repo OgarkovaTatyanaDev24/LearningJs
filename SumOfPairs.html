@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <div id="block"></div>
+    <script>
+      // Написать функцию, которая  в этом массиве найдет все пары чисел, сумма которых равна n.
+      // То есть, функция возвращает массив массивов.
+      // Понятно, что для n = 100 результатов типа [70, 30] и [30, 70] быть не должно,
+      //  потому что это одно и тоже.
+      const SumOfPairs = (arr, n) => {
+        const arrRes = [];
+        const set = new Set();
+        for (let i = 0; i < arr.length; i++) {
+          for (let j = 1; j < arr.length; j++) {
+            if (arr[i] + arr[j] === n && !set.has(arr[i])) {
+              set.add(arr[i]);
+              set.add(arr[j]);
+              arrRes.push([arr[i], arr[j]]);
+            }
+          }
+        }
+        return arrRes;
+      };
+      console.log(SumOfPairs([2, 4, 6, 8, 3, 5, 1], 8));
+    </script>
+  </head>
+  <body></body>
+</html>
