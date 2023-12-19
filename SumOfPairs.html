@@ -2,15 +2,15 @@
   <head>
     <div id="block"></div>
     <script>
-      const sumOfPairs = (arr, n) => {
+      const sumOfPairs1 = (arr, n) => {
         const arrRes = [];
         const set = new Set();
         for (let i = 0; i < arr.length; i++) {
-          for (let j = 1; j < arr.length; j++) {
+          for (let j = i + 1; j < arr.length; j++) {
             if (arr[i] + arr[j] === n && !set.has(arr[i])) {
+              arrRes.push([arr[i], arr[j]]);
               set.add(arr[i]);
               set.add(arr[j]);
-              arrRes.push([arr[i], arr[j]]);
             }
           }
         }
@@ -20,17 +20,32 @@
         const arrRes = [];
         const set = new Set();
         for (let i = 0; i < arr.length; i++) {
-          let item = arr.find((el) => el === n - arr[i]);
-          if (item && !set.has(arr[i])) {
-            set.add(arr[i]);
-            set.add(item);
-            arrRes.push([arr[i], item]);
+          let el = arr[i];
+          let pair = n - el;
+          if (set.has(el)) {
+            arrRes.push([el, pair]);
           }
+          set.add(pair);
         }
         return arrRes;
       };
-      console.log(sumOfPairs([2, 4, 6, 8, 3, 5, 1], 8));
+
+      const sumOfPairs3 = (arr, n, j = 1, set = new Set(), arrRes = []) => {
+        if (j <= arr.length) {
+          let end = arr.length - j;
+          let el = arr[end];
+          let pair = n - el;
+          if (set.has(el)) {
+            arrRes.push([el, pair]);
+          }
+          set.add(pair);
+          sumOfPairs3(arr, n, ++j, set, arrRes);
+        }
+        return arrRes;
+      };
+      console.log(sumOfPairs1([2, 4, 6, 8, 3, 5, 1], 8));
       console.log(sumOfPairs2([2, 4, 6, 8, 3, 5, 1], 8));
+      console.log(sumOfPairs3([2, 4, 6, 8, 3, 5, 1], 8));
     </script>
   </head>
   <body></body>
