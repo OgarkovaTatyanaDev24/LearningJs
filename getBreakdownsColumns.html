@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <script>
+      function getBreakdownsColumns1(chart, breakdowns) {
+        return breakdowns.reduce((acc, breakdown) => {
+          if (breakdown.splits.length) {
+            return acc.push(getSplitsColumns(chart, breakdown));
+          }
+          return acc.push(getBreakdownColumn(chart, breakdown));
+        }, []);
+      }
+
+      function getBreakdownsColumns2(chart, breakdowns) {
+        const rv = [];
+        for (breakdown of breakdowns) {
+          if (breakdown.splits.length) {
+            let columns = getSplitsColumns(chart, breakdown);
+            for (let i = 0; i < columns.length; i++) {
+              rv.push(columns[i]);
+            }
+            return rv.apply(null, args);
+          }
+          let column = getBreakdownColumn(chart, breakdown);
+          return rv.push(column);
+        }
+      }
+    </script>
+  </head>
+  <body></body>
+</html>

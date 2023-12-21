@@ -43,9 +43,22 @@
         }
         return arrRes;
       };
+      const sumOfPairs4 = (arr, n, set = new Set(), arrRes = []) => {
+        if (arr.length) {
+          let el = arr.pop();
+          let pair = n - el;
+          if (set.has(el)) {
+            arrRes.push([el, pair]);
+          }
+          set.add(pair);
+          sumOfPairs4(arr, n, set, arrRes);
+        }
+        return arrRes;
+      };
       console.log(sumOfPairs1([2, 4, 6, 8, 3, 5, 1], 8));
       console.log(sumOfPairs2([2, 4, 6, 8, 3, 5, 1], 8));
       console.log(sumOfPairs3([2, 4, 6, 8, 3, 5, 1], 8));
+      console.log(sumOfPairs4([2, 4, 6, 8, 3, 5, 1], 8));
     </script>
   </head>
   <body></body>
