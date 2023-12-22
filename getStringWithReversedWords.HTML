@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <script>
+      function getStringWithReversedWords1(str) {
+        return str
+          .split(" ")
+          .map((word) => word.split("").reverse().join(""))
+          .join(" ");
+      }
+      console.log(getStringWithReversedWords1("Мама мыла мыло"));
+
+      function getStringWithReversedWords2(str) {
+        let word = "";
+        let result = "";
+        for (let i = 0; i < str.length; i++) {
+          const char = str[i];
+          if (char !== " ") {
+            word = char + word;
+          } else {
+            result += word + " ";
+            word = "";
+          }
+        }
+        return result + word;
+      }
+      console.log(getStringWithReversedWords2("Мама мыла мыло"));
+    </script>
+  </head>
+  <body></body>
+</html>

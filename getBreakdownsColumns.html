@@ -14,13 +14,13 @@
         const rv = [];
         for (breakdown of breakdowns) {
           if (breakdown.splits.length) {
-            let columns = getSplitsColumns(chart, breakdown);
+            const columns = getSplitsColumns(chart, breakdown);
             for (let i = 0; i < columns.length; i++) {
               rv.push(columns[i]);
             }
             return rv.apply(null, args);
           }
-          let column = getBreakdownColumn(chart, breakdown);
+          const column = getBreakdownColumn(chart, breakdown);
           return rv.push(column);
         }
       }
