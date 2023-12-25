@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <script>
+      console.time("qwer2");
+
+      const numDivs = 70000;
+      let counter = 0;
+      function drawBlocks() {
+        const div = document.createElement("div");
+
+        div.innerText = counter;
+        counter++;
+
+        document.body.appendChild(div);
+
+        if (counter < numDivs) window.requestAnimationFrame(() => drawBlocks());
+      }
+
+      Promise.resolve().then(() => {
+        window.requestAnimationFrame(() => {
+          drawBlocks();
+        });
+      });
+
+      console.timeEnd("qwer2");
+    </script>
+  </head>
+  <body></body>
+</html>
